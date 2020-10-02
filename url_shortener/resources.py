@@ -55,12 +55,6 @@ class URLResource(Resource):
 class URLRedirectResource(Resource):
     def get(self, shortened_url):
         url = URL.query.filter_by(shortened_url=shortened_url).first()
-        print(f"expire in ==> {url.expire_in}")
-        print(f"created at ==> {url.created_at}")
-        print(f"diff ==> {((datetime.now() - url.created_at).total_seconds() / 60)}")
-        print(
-            f"{url.expire_in - ((datetime.now() - url.created_at).total_seconds() // 60)}"
-        )
         if url_expired(url):
             db.session.delete(url)
             db.session.commit()
